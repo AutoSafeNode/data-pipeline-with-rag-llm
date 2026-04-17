@@ -36,6 +36,17 @@ Data Scooper는 엑셀 및 PDF 파일에서 데이터를 추출하여 RAG 시스
 - RAG 컨텍스트를 활용한 질의응답
 - 재무 데이터 분석 템플릿
 
+### 5. RAG 평가 및 모니터링 🆕
+- **RAGAS 프레임워크**: RAG 시스템 성능 평가
+  - Faithfulness (충실도)
+  - Answer Relevancy (답변 관련성)
+  - Context Precision (컨텍스트 정확도)
+  - Context Recall (컨텍스트 재현율)
+- **LangSmith 통합**: RAG 파이프라인 추적 및 모니터링
+  - 실시간 성능 추적
+  - 디버깅 및 최적화 도구
+  - 피드백 수집 및 분석
+
 ## 프로젝트 구조
 
 ```
@@ -61,6 +72,10 @@ data-scooper/
 │   ├── llm/                 # LLM 통합 모듈
 │   │   ├── __init__.py
 │   │   └── gemini_client.py   # Gemini API 클라이언트
+│   ├── evaluation/          # RAG 평가 및 모니터링 🆕
+│   │   ├── __init__.py
+│   │   ├── ragas_evaluator.py    # RAGAS 평가 모듈
+│   │   └── langsmith_integration.py # LangSmith 통합
 │   └── utils/               # 유틸리티
 │       ├── __init__.py
 │       ├── logger.py          # 로깅 유틸리티
@@ -248,6 +263,89 @@ async def query_llm():
 asyncio.run(query_llm())
 ```
 
+## 🆕 RAG 평가 및 모니터링
+
+### RAGAS로 RAG 시스템 평가하기
+
+RAGAS 프레임워크를 사용하여 RAG 시스템의 성능을 정량적으로 평가할 수 있습니다.
+
+```bash
+# RAGAS 평가 실행
+python evaluate_rag.py ragas --sample-size 20
+
+# 전체 평가 실행
+python evaluate_rag.py all
+```
+
+### 프로그래매틱하게 RAGAS 사용하기
+
+```python
+import asyncio
+from src_python.evaluation.ragas_evaluator import create_ragas_evaluator
+
+async def evaluate_rag():
+    evaluator = create_ragas_evaluator()
+
+    # 평가 데이터 준비
+    questions = ["What is the purpose of this document?"]
+    answers = ["This document provides comprehensive analysis..."]
+    contexts = [["Key information from the document..."]]
+
+    # 평가 실행
+    result = await evaluator.evaluate_rag_system(
+        questions=questions,
+        answers=answers,
+        contexts=contexts
+    )
+
+    print(f"Faithfulness: {result.metrics['faithfulness']:.4f}")
+    print(f"Answer Relevancy: {result.metrics['answer_relevancy']:.4f}")
+
+asyncio.run(evaluate_rag())
+```
+
+### LangSmith로 파이프라인 모니터링하기
+
+LangSmith를 사용하여 RAG 파이프라인의 실행을 추적하고 모니터링할 수 있습니다.
+
+```bash
+# LangSmith 테스트
+python evaluate_rag.py langsmith
+```
+
+### LangSmith 프로그래매틱 통합
+
+```python
+import asyncio
+from src_python.evaluation.langsmith_integration import create_langsmith_integration
+
+async def trace_pipeline():
+    integration = create_langsmith_integration()
+
+    # RAG 쿼리 추적
+    await integration.trace_rag_query(
+        question="What is Data Scooper?",
+        context=["Data Scooper is a RAG pipeline system."],
+        answer="Data Scooper converts documents to RAG format.",
+        metadata={"version": "1.0", "test": True}
+    )
+
+    # 통계 확인
+    stats = await integration.get_run_statistics()
+    print(f"Total runs: {stats['total_runs']}")
+    print(f"Success rate: {stats['success_rate']:.2%}")
+
+asyncio.run(trace_pipeline())
+```
+
+### 평가 메트릭 이해하기
+
+**RAGAS 메트릭**:
+- **Faithfulness**: 생성된 답변이 검색된 컨텍스트에 얼마나 충실한가
+- **Answer Relevancy**: 답변이 질문에 얼마나 관련성이 있는가
+- **Context Precision**: 검색된 컨텍스트가 얼마나 정확한가
+- **Context Recall**: 관련 컨텍스트를 얼마나 잘 찾아내는가
+
 ## 데이터 포맷
 
 ### 입력 데이터
@@ -353,6 +451,17 @@ asyncio.run(query_llm())
 GEMINI_API_KEY=your_api_key
 EMBEDDING_MODEL=text-embedding-004
 VECTOR_STORE_PATH=./data/vectorstore
+
+# RAGAS 평가를 위한 설정 🆕
+OPENAI_API_KEY=your_openai_api_key_for_ragas_evaluation
+RAGAS_EVALUATION_MODEL=gpt-4o-mini
+RAGAS_EMBEDDING_MODEL=text-embedding-004
+
+# LangSmith 모니터링을 위한 설정 🆕
+LANGCHAIN_TRACING_V2=true
+LANGCHAIN_ENDPOINT=https://api.smith.langchain.com
+LANGCHAIN_API_KEY=your_langsmith_api_key
+LANGCHAIN_PROJECT=data-scooper
 ```
 
 ## Python 버전의 주요 특징

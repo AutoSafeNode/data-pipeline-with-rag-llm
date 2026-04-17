@@ -27,3 +27,17 @@ asyncio==3.4.3
 # Testing
 pytest==7.4.3
 pytest-asyncio==0.21.1
+
+# RAG Evaluation (RAGAS)
+ragas==0.1.7
+ragas-cli==0.1.7
+
+# LangSmith Integration
+langsmith==0.1.8
+langchain==0.3.7
+langchain-community==0.3.5
+
+# Additional ML for evaluation
+transformers==4.41.2
+torch==2.3.1
+sentence-transformers==3.0.1

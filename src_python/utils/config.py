@@ -39,11 +39,39 @@ class RAGConfig:
 
 
 @dataclass
+class RAGASConfig:
+    """RAGAS evaluation configuration."""
+    model: str = "gpt-4o-mini"
+    embeddingModel: str = "text-embedding-004"
+    metrics: list = None
+
+    def __post_init__(self):
+        if self.metrics is None:
+            self.metrics = ["faithfulness", "answer_relevancy", "context_precision", "context_recall"]
+
+
+@dataclass
+class LangSmithConfig:
+    """LangSmith integration configuration."""
+    projectName: str = "data-scooper"
+    samplingRate: float = 1.0
+    enableTracing: bool = True
+
+
+@dataclass
+class EvaluationConfig:
+    """Evaluation configuration."""
+    ragas: RAGASConfig
+    langsmith: LangSmithConfig
+
+
+@dataclass
 class Config:
     """Main configuration class."""
     gemini: GeminiConfig
     pipelines: Dict[str, PipelineConfig]
     rag: RAGConfig
+    evaluation: EvaluationConfig
     
     @classmethod
     def from_json(cls, config_path: str) -> 'Config':
@@ -65,7 +93,11 @@ class Config:
                 name: PipelineConfig(**value)
                 for name, value in data['pipelines'].items()
             },
-            rag=RAGConfig(**data['rag'])
+            rag=RAGConfig(**data['rag']),
+            evaluation=EvaluationConfig(
+                ragas=RAGASConfig(**data['evaluation']['ragas']),
+                langsmith=LangSmithConfig(**data['evaluation']['langsmith'])
+            )
         )
     
     @classmethod
