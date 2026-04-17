@@ -1,0 +1,29 @@
+{
+  "gemini": {
+    "apiKey": "YOUR_GEMINI_API_KEY",
+    "model": "gemini-pro",
+    "temperature": 0.3,
+    "topK": 40,
+    "topP": 0.95,
+    "maxOutputTokens": 2048
+  },
+  "pipelines": {
+    "excel": {
+      "inputDir": "./data/input/excel",
+      "outputDir": "./data/output/rag",
+      "chunkSize": 1000,
+      "chunkOverlap": 200
+    },
+    "pdf": {
+      "inputDir": "./data/input/pdf",
+      "outputDir": "./data/output/rag",
+      "chunkSize": 1500,
+      "chunkOverlap": 300
+    }
+  },
+  "rag": {
+    "embeddingModel": "text-embedding-004",
+    "vectorStorePath": "./data/vectorstore",
+    "maxDocuments": 1000
+  }
+}
