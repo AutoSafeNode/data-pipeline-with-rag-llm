@@ -346,6 +346,36 @@ asyncio.run(trace_pipeline())
 - **Context Precision**: 검색된 컨텍스트가 얼마나 정확한가
 - **Context Recall**: 관련 컨텍스트를 얼마나 잘 찾아내는가
 
+### 🆕 에이스(A's) 야구 데이터셋으로 RAG 평가하기
+
+프로젝트에 오클랜드 애슬레틱스(A's) 야구 팀 데이터셋이 포함되어 있어 바로 RAG 평가를 테스트할 수 있습니다!
+
+**데이터셋 특징**:
+- 100개의 평가 샘플
+- 7개 카테고리 (팀 정보, 역사, 선수, 구장, 라이벌, 머니볼, 최근 성적)
+- 질문, 컨텍스트, 답변, 정답 포함
+- RAGAS/Hugging Face 형식 지원
+
+```bash
+# 데이터셋 분석
+python3 analyze_dataset.py
+
+# RAGAS 평가 테스트 (샘플 10개)
+python3 test_ragas_with_as_dataset.py --samples 10
+
+# 데이터셋 업로드 준비
+python3 upload_to_ragas.py --dataset data/evaluation_datasets/as_evaluation_dataset_*.json
+```
+
+**데이터셋 카테고리**:
+- `team_info` (30개): 팀 기본 정보
+- `players` (20개): 전설적인 선수들
+- `history` (10개): 역사적 성과
+- `stadium` (10개): 구장 정보
+- `rivalries` (10개): 라이벌 관계
+- `moneyball` (10개): 머니볼 전략
+- `recent` (10개): 최근 성적
+
 ## 데이터 포맷
 
 ### 입력 데이터
