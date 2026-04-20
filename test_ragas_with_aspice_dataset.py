@@ -1,6 +1,6 @@
 """
-Test A's Dataset with RAGAS
-Upload and evaluate the generated A's baseball dataset using RAGAS framework
+Test ASPICE Dataset with RAGAS
+Upload and evaluate the generated ASPICE automotive certification dataset using RAGAS framework
 """
 
 import asyncio
@@ -13,7 +13,7 @@ from src_python.evaluation.ragas_evaluator import create_ragas_evaluator
 from src_python.utils.logger import get_logger
 
 
-logger = get_logger("ragas-as-test")
+logger = get_logger("ragas-aspice-test")
 
 
 async def load_dataset(dataset_path: str) -> List[Dict[str, Any]]:

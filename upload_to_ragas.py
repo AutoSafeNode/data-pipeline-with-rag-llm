@@ -1,6 +1,6 @@
 """
-Upload A's Dataset to RAGAS/HuggingFace
-Convert and upload the A's dataset to RAGAS-compatible format
+Upload ASPICE Dataset to RAGAS/HuggingFace
+Convert and upload the ASPICE automotive certification dataset to RAGAS-compatible format
 """
 
 import asyncio
