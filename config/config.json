@@ -25,5 +25,22 @@
     "embeddingModel": "text-embedding-004",
     "vectorStorePath": "./data/vectorstore",
     "maxDocuments": 1000
+  },
+  "evaluation": {
+    "ragas": {
+      "model": "gpt-4o-mini",
+      "embeddingModel": "text-embedding-004",
+      "metrics": [
+        "faithfulness",
+        "answer_relevancy",
+        "context_precision",
+        "context_recall"
+      ]
+    },
+    "langsmith": {
+      "projectName": "data-scooper",
+      "samplingRate": 1.0,
+      "enableTracing": true
+    }
   }
 }
